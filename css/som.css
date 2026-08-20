@@ -1,0 +1,1583 @@
+/* ==========================================================================
+   SOM — Sistema de Organización de Muestras
+   Hoja de estilos única. Sin framework, sin dependencias externas.
+
+   El lenguaje visual no se inventó para la web: sale del propio sistema.
+     · barra bicolor tinta→verde agua ....... del membrete del Informe de Ensayo
+     · chips "Etapa 1/2/3" .................. del menú lateral de la aplicación
+     · monoespaciada para números y códigos . del reloj y los códigos MB-xx
+     · bordes de 1px, radios chicos, casi sin sombra
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tipografías (servidas desde este mismo repositorio)
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/archivo-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/archivo-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/plexmono-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/plexmono-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/plexmono-500-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/plexmono-500-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* --------------------------------------------------------------------------
+   2. Fichas de color
+   Oscuro por defecto (es la línea del sistema). Claro si el sistema operativo
+   lo pide, y en los dos sentidos si la persona toca el interruptor.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --bg: #03081a;
+  --bg-deep: #01050f;
+  --surface: #0a1226;
+  --surface-2: #0e1830;
+  --border: #1a2740;
+  --border-strong: #26364f;
+  --text: #eef2f7;
+  --muted: #93a3bd;
+  --accent: #0d7a6f;
+  --accent-text: #2ec4b0;
+  --accent-soft: rgba(46, 196, 176, 0.12);
+  --on-accent: #ffffff;
+  --ink-bar: #16233f;
+  --marcador: #e0a05a;
+  --marcador-borde: rgba(224, 160, 90, 0.55);
+  --marcador-fondo: rgba(217, 131, 36, 0.12);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 64px rgba(0, 0, 0, 0.5);
+
+  --font-sans: 'Archivo', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Consolas',
+    'Liberation Mono', monospace;
+
+  --rail: clamp(1.25rem, 5vw, 4.5rem);
+  --measure: 66ch;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --header-h: 4rem;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 0.55s;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --bg: #f7f9fa;
+    --bg-deep: #eef2f5;
+    --surface: #ffffff;
+    --surface-2: #eef2f5;
+    --border: #e2e8ee;
+    --border-strong: #cbd6e0;
+    --text: #03081a;
+    --muted: #4a5a70;
+    --accent: #0d7a6f;
+    --accent-text: #0a6b60;
+    --accent-soft: rgba(13, 122, 111, 0.09);
+    --on-accent: #ffffff;
+    --ink-bar: #16233f;
+    --marcador: #8a5310;
+    --marcador-borde: rgba(154, 91, 15, 0.5);
+    --marcador-fondo: rgba(217, 131, 36, 0.1);
+    --shadow: 0 1px 2px rgba(3, 8, 26, 0.06), 0 12px 28px rgba(3, 8, 26, 0.07);
+    --shadow-lift: 0 2px 6px rgba(3, 8, 26, 0.08), 0 28px 60px rgba(3, 8, 26, 0.13);
+  }
+}
+
+:root[data-theme='light'] {
+  --bg: #f7f9fa;
+  --bg-deep: #eef2f5;
+  --surface: #ffffff;
+  --surface-2: #eef2f5;
+  --border: #e2e8ee;
+  --border-strong: #cbd6e0;
+  --text: #03081a;
+  --muted: #4a5a70;
+  --accent: #0d7a6f;
+  --accent-text: #0a6b60;
+  --accent-soft: rgba(13, 122, 111, 0.09);
+  --on-accent: #ffffff;
+  --ink-bar: #16233f;
+  --marcador: #8a5310;
+  --marcador-borde: rgba(154, 91, 15, 0.5);
+  --marcador-fondo: rgba(217, 131, 36, 0.1);
+  --shadow: 0 1px 2px rgba(3, 8, 26, 0.06), 0 12px 28px rgba(3, 8, 26, 0.07);
+  --shadow-lift: 0 2px 6px rgba(3, 8, 26, 0.08), 0 28px 60px rgba(3, 8, 26, 0.13);
+}
+
+/* --------------------------------------------------------------------------
+   3. Base
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1.5rem);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--accent-text);
+  text-decoration-color: color-mix(in srgb, var(--accent-text) 40%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.saltar {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+.saltar:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. Retícula — asimétrica a propósito
+   -------------------------------------------------------------------------- */
+
+.env {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: var(--rail);
+}
+
+.seccion {
+  padding-block: clamp(4rem, 9vw, 8rem);
+  position: relative;
+}
+
+.seccion + .seccion {
+  border-top: 1px solid var(--border);
+}
+
+/* Dos columnas desparejas: el texto no arranca en el borde. */
+.desparejo {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+@media (min-width: 62rem) {
+  .desparejo {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+  .desparejo--invertido {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+  .desparejo--invertido > :first-child {
+    order: 2;
+  }
+  .desparejo--invertido > :last-child {
+    order: 1;
+  }
+}
+
+.medida {
+  max-width: var(--measure);
+}
+
+/* --------------------------------------------------------------------------
+   5. Piezas tomadas del sistema
+   -------------------------------------------------------------------------- */
+
+/* La barra bicolor del membrete del Informe de Ensayo. */
+.regla-bicolor {
+  height: 4px;
+  border: 0;
+  margin: 0;
+  background: linear-gradient(
+    90deg,
+    var(--ink-bar) 0%,
+    var(--ink-bar) 45%,
+    var(--accent) 45%,
+    #16a394 100%
+  );
+  view-transition-name: regla-bicolor;
+}
+
+/* El chip "Etapa 1" del menú lateral. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.28em 0.6em;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.chip--acento {
+  border-color: color-mix(in srgb, var(--accent-text) 45%, transparent);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+/* Rótulo de sección, en mono como los códigos de ensayo. */
+.rotulo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rotulo::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* La línea de estado del panel: "Servidor local · sin conexión a internet". */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.estado::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-text);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   6. Encabezado
+   -------------------------------------------------------------------------- */
+
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  view-transition-name: cabecera;
+}
+
+.cabecera__fila {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: var(--header-h);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-right: auto;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.marca img {
+  width: 30px;
+  height: 30px;
+  view-transition-name: emblema;
+}
+.marca span {
+  font-size: 1.05rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.nav a {
+  position: relative;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.nav a:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.nav a[aria-current='page'] {
+  color: var(--accent-text);
+  background: var(--accent-soft);
+}
+
+/* En pantallas chicas la navegación pasa a una fila propia que se desliza. */
+@media (max-width: 46rem) {
+  .cabecera__fila {
+    height: auto;
+    padding-block: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0.15rem;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .marca span {
+    font-size: 0.95rem;
+  }
+}
+
+/* Interruptor claro / oscuro */
+.tema {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.tema:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.tema svg {
+  width: 17px;
+  height: 17px;
+}
+.tema .luna {
+  display: none;
+}
+:root[data-theme='light'] .tema .luna,
+:root[data-theme='dark'] .tema .sol {
+  display: block;
+}
+:root[data-theme='light'] .tema .sol,
+:root[data-theme='dark'] .tema .luna {
+  display: none;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .tema .sol {
+    display: none;
+  }
+  :root:not([data-theme]) .tema .luna {
+    display: block;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Tipografía de página
+   -------------------------------------------------------------------------- */
+
+.titular {
+  font-size: clamp(2.5rem, 1.4rem + 5.2vw, 5.25rem);
+  letter-spacing: -0.035em;
+}
+
+.titulo-2 {
+  font-size: clamp(1.85rem, 1.25rem + 2.4vw, 3rem);
+  letter-spacing: -0.03em;
+}
+
+.titulo-3 {
+  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.6rem);
+  letter-spacing: -0.02em;
+}
+
+.bajada {
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.suave {
+  color: var(--muted);
+}
+
+.destacado {
+  color: var(--accent-text);
+}
+
+/* --------------------------------------------------------------------------
+   8. Botones
+   -------------------------------------------------------------------------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), background-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+.boton:hover {
+  background: #109083;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.boton:active {
+  transform: translateY(0);
+}
+
+.boton--linea {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.boton--linea:hover {
+  background: var(--surface-2);
+  border-color: var(--accent-text);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.botonera {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. Marco de navegador para las capturas
+   -------------------------------------------------------------------------- */
+
+.marco {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: box-shadow 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.marco__barra {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.marco__puntos {
+  display: flex;
+  gap: 0.35rem;
+  flex: none;
+}
+.marco__puntos i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.marco__url {
+  flex: 1;
+  min-width: 0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marco img {
+  width: 100%;
+}
+
+.marco--realce:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-3px);
+}
+
+/* --------------------------------------------------------------------------
+   10. Portada
+   -------------------------------------------------------------------------- */
+
+.portada {
+  position: relative;
+  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3rem, 6vw, 5rem);
+  overflow: hidden;
+}
+
+/* Trama de fondo: una grilla finísima, no un degradado de moda. */
+.portada::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse 90% 65% at 50% 0%, #000 20%, transparent 78%);
+  pointer-events: none;
+}
+
+.portada > * {
+  position: relative;
+}
+
+.portada__emblema {
+  width: clamp(72px, 11vw, 108px);
+  height: auto;
+  margin-bottom: 1.75rem;
+  filter: drop-shadow(0 12px 32px rgba(13, 122, 111, 0.28));
+}
+
+.portada__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* --------------------------------------------------------------------------
+   11. Video
+   -------------------------------------------------------------------------- */
+
+.video {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-deep);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  box-shadow: var(--shadow);
+}
+
+.video video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--bg-deep);
+}
+
+.video__tapa {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 1rem;
+  justify-items: center;
+  border: 0;
+  width: 100%;
+  padding: 1.5rem;
+  background: radial-gradient(
+      ellipse 70% 70% at 50% 45%,
+      rgba(13, 122, 111, 0.18),
+      transparent 70%
+    ),
+    #03081a;
+  color: #eef2f7;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.45s var(--ease), visibility 0.45s;
+}
+
+.video__tapa img {
+  width: clamp(56px, 9vw, 84px);
+  opacity: 0.95;
+}
+
+.video__play {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.25rem;
+  border: 1px solid rgba(238, 242, 247, 0.28);
+  border-radius: 999px;
+  background: rgba(238, 242, 247, 0.06);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.video__tapa:hover .video__play {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.video__dato {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: rgba(238, 242, 247, 0.55);
+}
+
+.video.corriendo .video__tapa {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   12. El problema — lista de pasos que hoy se hacen a mano
+   -------------------------------------------------------------------------- */
+
+.hoy {
+  display: grid;
+  gap: 1px;
+  margin-top: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--border);
+  overflow: hidden;
+}
+@media (min-width: 48rem) {
+  .hoy {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.hoy__paso {
+  padding: 1.5rem 1.35rem;
+  background: var(--surface);
+}
+
+.hoy__n {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.hoy__paso strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 1.05rem;
+}
+
+.hoy__paso p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.remate {
+  margin-top: 2rem;
+  padding-left: 1.25rem;
+  border-left: 3px solid var(--accent);
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   13. Etapas
+   -------------------------------------------------------------------------- */
+
+.etapas {
+  position: relative;
+  display: grid;
+  gap: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+/* La línea que une las tres etapas, dibujada al bajar. */
+.etapas::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0.75rem;
+  bottom: 4rem;
+  width: 2px;
+  background: linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 25%, transparent));
+  transform-origin: top;
+  transform: scaleY(var(--avance, 1));
+}
+@media (max-width: 61.99rem) {
+  .etapas::before {
+    display: none;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (min-width: 62rem) and (prefers-reduced-motion: no-preference) {
+    .etapas::before {
+      animation: dibujar-linea linear both;
+      animation-timeline: view();
+      animation-range: cover 12% cover 78%;
+    }
+  }
+}
+@keyframes dibujar-linea {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.etapa {
+  position: relative;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (min-width: 62rem) {
+  .etapa {
+    grid-template-columns: minmax(0, 4.5fr) minmax(0, 7.5fr);
+    padding-left: 3.5rem;
+  }
+  /* El punto sobre la línea. */
+  .etapa::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75rem;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    background: var(--bg);
+    transition: background-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .etapa.visible::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 6px var(--accent-soft);
+  }
+  /* La segunda etapa entra por el otro lado: la retícula no es simétrica. */
+  .etapa--espejo {
+    grid-template-columns: minmax(0, 7.5fr) minmax(0, 4.5fr);
+  }
+  .etapa--espejo .etapa__texto {
+    order: 2;
+  }
+  .etapa--espejo .etapa__figura {
+    order: 1;
+  }
+}
+
+.etapa__texto .chip {
+  margin-bottom: 1rem;
+}
+
+.etapa__texto p {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+.clave {
+  margin-top: 1.5rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.clave strong {
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   14. "El dato viaja" — la demostración del tercer argumento
+   -------------------------------------------------------------------------- */
+
+.viaje {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.viaje__cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.viaje__pista {
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 52rem) {
+  .viaje__pista {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.parada {
+  position: relative;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  transition: border-color 0.45s var(--ease), background-color 0.45s var(--ease);
+}
+
+.parada.activa {
+  border-color: var(--accent-text);
+  background: var(--accent-soft);
+}
+
+/* La flecha entre paradas. */
+@media (min-width: 52rem) {
+  .parada + .parada::before {
+    content: '';
+    position: absolute;
+    left: -1.05rem;
+    top: 50%;
+    width: 0.85rem;
+    height: 1px;
+    background: var(--border-strong);
+  }
+}
+
+.parada__rot {
+  display: block;
+  margin-bottom: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.parada__campo {
+  min-height: 2.4rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  transition: border-style 0.3s, border-color 0.3s;
+}
+
+.parada.activa .parada__campo {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--accent-text) 50%, transparent);
+  color: var(--text);
+}
+
+/* El valor que viaja. */
+.parada__valor {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.parada.activa .parada__valor {
+  opacity: 1;
+}
+
+.viaje__pie {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.repetir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.repetir:hover {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+}
+
+/* --------------------------------------------------------------------------
+   15. El informe
+   -------------------------------------------------------------------------- */
+
+.hoja {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+  overflow: hidden;
+}
+
+.hoja img {
+  width: 100%;
+}
+
+/* El sello se estampa una sola vez, al entrar en pantalla. */
+.sello {
+  position: absolute;
+  right: clamp(0.75rem, 3vw, 2.5rem);
+  top: clamp(0.75rem, 3vw, 2.5rem);
+  display: grid;
+  place-items: center;
+  gap: 0.15rem;
+  width: clamp(84px, 13vw, 132px);
+  aspect-ratio: 1;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(3px);
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 1.1vw, 0.62rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.3;
+  opacity: 0;
+  transform: rotate(-14deg) scale(1.9);
+}
+
+.sello b {
+  font-size: 1.5em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.hoja.visible .sello {
+  animation: estampar 0.75s var(--ease-out) 0.35s both;
+}
+
+@keyframes estampar {
+  0% {
+    opacity: 0;
+    transform: rotate(-14deg) scale(1.9);
+  }
+  55% {
+    opacity: 1;
+    transform: rotate(-14deg) scale(0.94);
+  }
+  75% {
+    transform: rotate(-14deg) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-14deg) scale(1);
+  }
+}
+
+/* La bifurcación: con sello / sin sello. */
+.bifurca {
+  display: grid;
+  gap: 1px;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--border);
+  overflow: hidden;
+}
+@media (min-width: 48rem) {
+  .bifurca {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.bifurca__lado {
+  padding: 1.75rem 1.5rem;
+  background: var(--surface);
+}
+
+.bifurca__lado h3 {
+  margin-bottom: 0.65rem;
+}
+
+.bifurca__lado p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.bifurca__lado .chip {
+  margin-bottom: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   16. Los tres argumentos
+   -------------------------------------------------------------------------- */
+
+.argumentos {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  counter-reset: arg;
+}
+@media (min-width: 52rem) {
+  .argumentos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.argumento {
+  position: relative;
+  padding-top: 2.5rem;
+  border-top: 2px solid var(--border);
+  transition: border-color 0.5s var(--ease);
+}
+.argumento::before {
+  counter-increment: arg;
+  content: counter(arg, decimal-leading-zero);
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--accent-text);
+}
+.argumento.visible {
+  border-top-color: var(--accent);
+}
+
+.argumento h3 {
+  margin-bottom: 0.6rem;
+}
+
+.argumento p {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+/* --------------------------------------------------------------------------
+   17. Qué incluye
+   -------------------------------------------------------------------------- */
+
+.incluye {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--border);
+  overflow: hidden;
+}
+@media (min-width: 40rem) {
+  .incluye {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .incluye {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.incluye__item {
+  padding: 1.6rem 1.4rem;
+  background: var(--surface);
+  transition: background-color 0.3s var(--ease);
+}
+.incluye__item:hover {
+  background: var(--surface-2);
+}
+
+.incluye__item h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.incluye__item p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   18. Contacto y formulario
+   -------------------------------------------------------------------------- */
+
+.canales {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 40rem) {
+  .canales {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.canal {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1.35rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+.canal:hover {
+  border-color: var(--accent-text);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.canal svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  color: var(--accent-text);
+}
+
+.canal strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 1rem;
+}
+
+.canal span {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.formulario {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.campo {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.campo input:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.campo textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.doble {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 34rem) {
+  .doble {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.aviso-form {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.form-estado {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-size: 0.9rem;
+}
+.form-estado[hidden] {
+  display: none;
+}
+
+/* Miel para robots: invisible para personas. */
+.miel {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   19. Marcadores para completar
+   -------------------------------------------------------------------------- */
+
+.marcador {
+  display: inline-block;
+  padding: 0.05em 0.4em;
+  border: 1px dashed var(--marcador-borde);
+  border-radius: 3px;
+  background: var(--marcador-fondo);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: var(--marcador);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   20. Cierre de página
+   -------------------------------------------------------------------------- */
+
+.siguiente {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.siguiente:hover {
+  border-color: var(--accent-text);
+  background: var(--surface-2);
+}
+.siguiente small {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.siguiente strong {
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
+  letter-spacing: -0.02em;
+}
+.siguiente svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--accent-text);
+  transition: transform 0.25s var(--ease);
+}
+.siguiente:hover svg {
+  transform: translateX(4px);
+}
+
+.pie {
+  border-top: 1px solid var(--border);
+  padding-block: 2.5rem 3rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.pie__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pie a {
+  color: var(--muted);
+}
+.pie a:hover {
+  color: var(--accent-text);
+}
+
+.descargo {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* --------------------------------------------------------------------------
+   21. Entradas al hacer scroll
+   -------------------------------------------------------------------------- */
+
+.revelar {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transition-delay: var(--demora, 0ms);
+}
+.revelar.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Si el JavaScript no corre, no se esconde nada. */
+.sin-js .revelar,
+.sin-js .parada__valor {
+  opacity: 1;
+  transform: none;
+}
+
+.sin-js .sello {
+  opacity: 1;
+  transform: rotate(-14deg) scale(1);
+}
+
+.sin-js .parada__campo {
+  border-style: solid;
+}
+
+/* --------------------------------------------------------------------------
+   22. Transiciones entre páginas
+   -------------------------------------------------------------------------- */
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: salir 0.28s var(--ease) both;
+  }
+  ::view-transition-new(root) {
+    animation: entrar 0.42s var(--ease-out) both;
+  }
+}
+
+@keyframes salir {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   23. Movimiento reducido — todo se apaga, nada se pierde
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .revelar {
+    opacity: 1;
+    transform: none;
+  }
+  .sello {
+    opacity: 1;
+    transform: rotate(-14deg) scale(1);
+  }
+  .etapas::before {
+    transform: scaleY(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   24. Impresión
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .cabecera,
+  .video__tapa,
+  .siguiente,
+  .tema,
+  .repetir {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

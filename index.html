@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es" class="sin-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOM — Sistema de Organización de Muestras</title>
+    <meta
+      name="description"
+      content="Sistema de gestión para laboratorios de microbiología de alimentos. Del ingreso de la muestra al Informe de Ensayo firmado. Se instala en el laboratorio y funciona sin conexión a internet."
+    />
+    <meta name="theme-color" content="#03081a" />
+    <link rel="icon" href="./img/emblema.png" type="image/png" />
+    <link rel="preload" href="./fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./css/som.css" />
+    <script>
+      /* Antes de pintar: saca la marca de "sin JavaScript" y aplica el tema
+         guardado, para que no haya un parpadeo blanco. */
+      document.documentElement.classList.remove('sin-js');
+      try {
+        var t = localStorage.getItem('som-tema');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+    <header class="cabecera">
+      <div class="env cabecera__fila">
+        <a class="marca" href="./index.html">
+          <img src="./img/emblema.png" alt="" width="30" height="30" />
+          <span>SOM</span>
+        </a>
+        <nav class="nav" aria-label="Principal">
+          <a href="./index.html" aria-current="page">Inicio</a>
+          <a href="./circuito.html">El circuito</a>
+          <a href="./informe.html">El informe</a>
+          <a href="./contacto.html">Contacto</a>
+        </nav>
+        <button class="tema" type="button" aria-label="Cambiar a modo claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+      <hr class="regla-bicolor" />
+    </header>
+
+    <main id="contenido">
+      <!-- ================= PORTADA ================= -->
+      <section class="portada">
+        <div class="env">
+          <img
+            class="portada__emblema"
+            src="./img/emblema.png"
+            alt="Emblema de SOM"
+            width="108"
+            height="108"
+          />
+          <p class="chip chip--acento">Sistema de Organización de Muestras</p>
+          <h1 class="titular" style="margin-top: 1.25rem">
+            Del ingreso de la muestra<br />
+            al <span class="destacado">Informe de Ensayo</span> firmado.
+          </h1>
+          <p class="bajada medida" style="margin-top: 1.75rem">
+            SOM es el sistema de gestión para laboratorios de microbiología de
+            alimentos. Cubre el circuito completo, se instala en un servidor del
+            propio laboratorio y funciona sin conexión a internet.
+          </p>
+          <div class="botonera" style="margin-top: 2.25rem">
+            <a class="boton" href="./circuito.html">Ver cómo funciona</a>
+            <a class="boton boton--linea" href="./contacto.html">Escribinos</a>
+          </div>
+          <div class="portada__pie">
+            <span class="estado">Servidor local · sin conexión a internet</span>
+            <span class="mono suave">Sin nube · sin cuenta · sin mensualidad por usuario</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIDEO ================= -->
+      <section class="seccion">
+        <div class="env">
+          <p class="rotulo">Recorrido</p>
+          <div class="desparejo">
+            <div>
+              <h2 class="titulo-2">Un minuto adentro del sistema</h2>
+              <p class="suave" style="margin-top: 1rem">
+                El recorrido completo, de la primera pantalla al informe
+                terminado. Dura 1:09 y no arranca solo: apretá play cuando
+                quieras.
+              </p>
+            </div>
+            <div class="video">
+              <video
+                preload="none"
+                playsinline
+                src="./video/recorrido.mp4"
+                title="Recorrido por SOM"
+              >
+                Tu navegador no puede reproducir este video.
+                <a href="./video/recorrido.mp4">Descargalo acá.</a>
+              </video>
+              <button class="video__tapa" type="button">
+                <img src="./img/emblema.png" alt="" width="84" height="84" />
+                <span class="video__play">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                  Ver el recorrido
+                </span>
+                <span class="video__dato">1:09 · 1080p · 4,2 MB</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= EL PROBLEMA ================= -->
+      <section class="seccion">
+        <div class="env">
+          <p class="rotulo">Cómo se trabaja hoy</p>
+          <h2 class="titulo-2 medida">
+            No tenés un problema de análisis.<br />
+            Tenés un problema de papeles.
+          </h2>
+
+          <div class="hoy" data-escalonar>
+            <div class="hoy__paso revelar">
+              <span class="hoy__n">01</span>
+              <strong>El cuaderno</strong>
+              <p>La muestra que entra se anota a mano, y el número también.</p>
+            </div>
+            <div class="hoy__paso revelar">
+              <span class="hoy__n">02</span>
+              <strong>La planilla</strong>
+              <p>Los resultados se cargan de nuevo, en otro lado.</p>
+            </div>
+            <div class="hoy__paso revelar">
+              <span class="hoy__n">03</span>
+              <strong>El procesador de texto</strong>
+              <p>El informe se arma copiando todo por tercera vez.</p>
+            </div>
+            <div class="hoy__paso revelar">
+              <span class="hoy__n">04</span>
+              <strong>El conteo del mes</strong>
+              <p>Para facturar, se cuenta a mano cuántos análisis hizo cada cliente.</p>
+            </div>
+          </div>
+
+          <p class="remate medida revelar">
+            Cada dato se escribe tres o cuatro veces, y cada vez puede salir
+            distinto.
+          </p>
+
+          <p class="suave medida revelar" style="margin-top: 1.5rem">
+            Cuando llega una auditoría, reconstruir qué pasó con una muestra de
+            hace ocho meses lleva una tarde.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= SIGUIENTE ================= -->
+      <section class="seccion">
+        <div class="env">
+          <a class="siguiente" href="./circuito.html">
+            <span>
+              <small>Seguir</small>
+              <strong>Las tres etapas del circuito</strong>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie">
+      <div class="env">
+        <div class="pie__fila">
+          <div>
+            <strong data-dato="nombre"></strong>
+            <span class="suave"> · </span>
+            <span class="suave" data-dato="rol"></span>
+          </div>
+          <nav aria-label="Pie">
+            <a href="./circuito.html">El circuito</a> ·
+            <a href="./informe.html">El informe</a> ·
+            <a href="./contacto.html">Contacto</a>
+          </nav>
+        </div>
+        <p class="descargo">
+          Las capturas de pantalla y el video de esta página corresponden a una
+          instalación de demostración con datos inventados. Ningún cliente,
+          muestra, resultado ni laboratorio que aparezca en las imágenes
+          corresponde a una persona, empresa o laboratorio real.
+        </p>
+      </div>
+    </footer>
+
+    <script src="./js/datos.js"></script>
+    <script src="./js/som.js" defer></script>
+  </body>
+</html>

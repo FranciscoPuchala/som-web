@@ -1,0 +1,9 @@
+# El brief tiene notas internas (condiciones comerciales, el laboratorio que
+# todavia no autorizo ser mencionado). El repositorio de GitHub Pages es
+# publico: esto no sube.
+BRIEF_WEB_SOM.md
+
+# Basura del sistema
+Thumbs.db
+desktop.ini
+.DS_Store
