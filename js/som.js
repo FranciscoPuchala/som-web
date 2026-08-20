@@ -138,20 +138,47 @@
     '.revelar, .etapa, .hoja, .argumento'
   );
 
+  /* Sentido del scroll: bajando el contenido entra desde abajo, subiendo
+     entra desde arriba. La clase vive en <html> y la CSS la lee. */
+  var ultimoY = window.pageYOffset || 0;
+  var pendiente = false;
+
+  function anotarSentido() {
+    var y = window.pageYOffset || 0;
+    if (Math.abs(y - ultimoY) > 4) {
+      raiz.classList.toggle('sube', y < ultimoY);
+      raiz.classList.toggle('baja', y > ultimoY);
+      ultimoY = y;
+    }
+    pendiente = false;
+  }
+
+  if (!quietud.matches) {
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (pendiente) return;
+        pendiente = true;
+        window.requestAnimationFrame(anotarSentido);
+      },
+      { passive: true }
+    );
+  }
+
   if (!('IntersectionObserver' in window) || quietud.matches) {
     Array.prototype.forEach.call(observables, function (el) {
       el.classList.add('visible');
     });
   } else {
+    /* Va y viene: al entrar se muestra, al salir se rearma. Así la animación
+       vuelve a ocurrir cuando se scrollea para arriba. */
     var mirón = new IntersectionObserver(
       function (entradas) {
         entradas.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          e.target.classList.add('visible');
-          mirón.unobserve(e.target); /* una vez y listo, no parpadea */
+          e.target.classList.toggle('visible', e.isIntersecting);
         });
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.12 }
+      { rootMargin: '-6% 0px -10% 0px', threshold: 0.08 }
     );
 
     Array.prototype.forEach.call(observables, function (el) {
@@ -243,9 +270,13 @@
       var ojo = new IntersectionObserver(
         function (entradas) {
           entradas.forEach(function (e) {
-            if (!e.isIntersecting) return;
-            correr();
-            ojo.unobserve(e.target);
+            if (e.isIntersecting) {
+              correr();
+            } else {
+              /* Al salir se rearma, para que vuelva a correr si se sube. */
+              corriendo = false;
+              limpiar();
+            }
           });
         },
         { threshold: 0.35 }

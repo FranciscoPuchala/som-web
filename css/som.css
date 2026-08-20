@@ -638,9 +638,24 @@ a {
   width: 100%;
 }
 
+.marco--realce {
+  transition: box-shadow 0.4s var(--ease), translate 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+}
 .marco--realce:hover {
   box-shadow: var(--shadow-lift);
-  transform: translateY(-3px);
+  translate: 0 -4px;
+  border-color: color-mix(in srgb, var(--accent-text) 45%, var(--border));
+}
+/* La captura respira apenas al pasar el cursor. */
+.marco img {
+  transition: scale 0.6s var(--ease);
+}
+.marco--realce:hover img {
+  scale: 1.012;
+}
+.marco--realce:hover .marco__url {
+  color: var(--accent-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -1480,10 +1495,17 @@ a {
 
 .revelar {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(18px);
   transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
   transition-delay: var(--demora, 0ms);
 }
+
+/* Bajando entra desde abajo; subiendo entra desde arriba. El contenido
+   acompana el sentido del scroll en vez de contradecirlo. */
+html.sube .revelar {
+  transform: translateY(-18px);
+}
+
 .revelar.visible {
   opacity: 1;
   transform: none;
@@ -1536,7 +1558,254 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   23. Movimiento reducido — todo se apaga, nada se pierde
+   23. Al pasar el cursor
+   Todo con la misma gramatica: un filete de acento que crece desde la
+   izquierda, el borde que se enciende y un desplazamiento minimo. Nada de
+   sombras infladas ni tarjetas que saltan.
+   -------------------------------------------------------------------------- */
+
+/* Los cuatro pasos de "como se trabaja hoy" */
+.hoy__paso {
+  position: relative;
+  transition: background-color 0.35s var(--ease);
+}
+.hoy__paso::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.45s var(--ease);
+}
+.hoy__paso:hover {
+  background: var(--surface-2);
+}
+.hoy__paso:hover::after {
+  transform: scaleY(1);
+}
+.hoy__n {
+  transition: color 0.35s var(--ease), letter-spacing 0.35s var(--ease);
+}
+.hoy__paso:hover .hoy__n {
+  color: var(--accent-text);
+  letter-spacing: 0.22em;
+}
+
+/* La grilla de "que incluye" */
+.incluye__item {
+  position: relative;
+}
+.incluye__item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease);
+}
+.incluye__item:hover::after {
+  transform: scaleX(1);
+}
+.incluye__item h3 {
+  transition: translate 0.35s var(--ease), color 0.35s var(--ease);
+}
+.incluye__item:hover h3 {
+  translate: 4px 0;
+  color: var(--accent-text);
+}
+
+/* Con sello / sin sello */
+.bifurca__lado {
+  transition: background-color 0.35s var(--ease);
+}
+.bifurca__lado:hover {
+  background: var(--surface-2);
+}
+.bifurca__lado .chip {
+  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+.bifurca__lado:hover .chip {
+  border-color: color-mix(in srgb, var(--accent-text) 55%, transparent);
+  color: var(--accent-text);
+}
+
+/* Los tres argumentos */
+.argumento {
+  transition: border-top-color 0.5s var(--ease), translate 0.35s var(--ease);
+}
+.argumento::before {
+  transition: translate 0.35s var(--ease), color 0.3s var(--ease);
+}
+.argumento:hover {
+  translate: 0 -3px;
+}
+.argumento:hover::before {
+  translate: 0 -3px;
+}
+.argumento h3 {
+  transition: color 0.3s var(--ease);
+}
+.argumento:hover h3 {
+  color: var(--accent-text);
+}
+
+/* Las paradas del viaje del dato */
+.parada {
+  transition: border-color 0.45s var(--ease), background-color 0.45s var(--ease),
+    translate 0.35s var(--ease);
+}
+.parada:hover {
+  translate: 0 -2px;
+  border-color: color-mix(in srgb, var(--accent-text) 55%, var(--border));
+}
+
+/* Los chips de etapa */
+.etapa__texto .chip {
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease),
+    background-color 0.3s var(--ease);
+}
+.etapa:hover .chip {
+  border-color: color-mix(in srgb, var(--accent-text) 55%, transparent);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+/* La cita destacada de cada etapa */
+.clave {
+  transition: border-left-color 0.35s var(--ease), background-color 0.35s var(--ease);
+}
+.etapa:hover .clave {
+  background: var(--surface-2);
+}
+
+/* El emblema del encabezado */
+.marca img {
+  transition: rotate 0.6s var(--ease), scale 0.35s var(--ease);
+}
+.marca:hover img {
+  rotate: -8deg;
+  scale: 1.08;
+}
+
+/* La hoja del informe */
+.hoja {
+  transition: box-shadow 0.5s var(--ease), translate 0.5s var(--ease);
+}
+.hoja:hover {
+  translate: 0 -4px;
+}
+
+/* Enlaces de texto: el subrayado se engrosa en vez de aparecer de golpe */
+main p a,
+.pie a {
+  transition: color 0.25s var(--ease), text-decoration-color 0.25s var(--ease),
+    text-decoration-thickness 0.25s var(--ease);
+  text-decoration-thickness: 1px;
+}
+main p a:hover,
+.pie a:hover {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   24. Animaciones atadas al scroll
+   Estas se mueven con la barra: bajando avanzan, subiendo retroceden. No es
+   un disparo que ocurre una vez, es la posicion del scroll manejando el
+   cuadro exacto de la animacion. Donde el navegador no las soporta, queda el
+   camino con JavaScript, que tambien va y viene.
+   -------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .revelar {
+      animation: asomar linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+
+    /* Las capturas y la hoja del informe se asientan al entrar. Usan
+       transform, y el realce del cursor usa translate: se componen. */
+    .marco,
+    .hoja,
+    .viaje {
+      animation: asentar linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+
+    /* Los hermanos de una misma fila entran escalonados. */
+    [data-escalonar] > *:nth-child(2) {
+      animation-range: entry 12% cover 30%;
+    }
+    [data-escalonar] > *:nth-child(3) {
+      animation-range: entry 16% cover 34%;
+    }
+    [data-escalonar] > *:nth-child(4) {
+      animation-range: entry 20% cover 38%;
+    }
+    [data-escalonar] > *:nth-child(5) {
+      animation-range: entry 24% cover 42%;
+    }
+    [data-escalonar] > *:nth-child(6) {
+      animation-range: entry 28% cover 46%;
+    }
+
+    /* Los titulares de seccion suben apenas mientras cruzan la pantalla. */
+    .seccion > .env > .rotulo,
+    .seccion > .env > .titulo-2,
+    .seccion > .env > .titular {
+      animation: subir-suave linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+
+@keyframes asomar {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes asentar {
+  from {
+    opacity: 0;
+    transform: translateY(34px) scale(0.988);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes subir-suave {
+  from {
+    opacity: 0.25;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   25. Movimiento reducido — todo se apaga, nada se pierde
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1562,10 +1831,18 @@ a {
   .etapas::before {
     transform: scaleY(1);
   }
+  .marco,
+  .hoja,
+  .viaje,
+  .revelar {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* --------------------------------------------------------------------------
-   24. Impresión
+   26. Impresión
    -------------------------------------------------------------------------- */
 
 @media print {
