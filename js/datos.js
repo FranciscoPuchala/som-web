@@ -11,7 +11,7 @@
 window.SOM_DATOS = {
   /* Tu nombre, como querés que aparezca al pie de la página.
      Ejemplo: 'Francisco Puchala'                                            */
-  nombre: '',
+  nombre: 'Francisco Puchala',
 
   /* Una línea corta debajo de tu nombre. Opcional.
      Ejemplo: 'Desarrollo y soporte de SOM · Montevideo'                     */
@@ -19,14 +19,14 @@ window.SOM_DATOS = {
 
   /* WhatsApp, con código de país y SIN espacios, guiones ni el signo +.
      Uruguay es 598. Ejemplo: para 099 123 456 va '59899123456'              */
-  whatsapp: '',
+  whatsapp: '59891222468',
 
   /* Cómo se muestra ese número en pantalla (con espacios, más legible).
      Ejemplo: '+598 99 123 456'                                              */
-  whatsappVisible: '',
+  whatsappVisible: '+598 91 222 468',
 
   /* Correo de contacto. Ejemplo: 'contacto@som.com.uy'                      */
-  email: '',
+  email: 'franpuchala8@gmail.com',
 
   /* --------------------------------------------------------------------
      FORMULARIO — opcional
@@ -42,7 +42,7 @@ window.SOM_DATOS = {
        cuenta gratuita en formspree.io o web3forms.com y pegá acá la
        dirección que te dan.
        Ejemplo: 'https://formspree.io/f/xxxxxxxx'                            */
-  formEndpoint: '',
+  formEndpoint: 'https://formspree.io/f/mvkpnqyn',
 
   /* Dominio propio, cuando lo compres. Se usa sólo para mostrarlo en la
      barra de las capturas. Ejemplo: 'som.com.uy'                            */
