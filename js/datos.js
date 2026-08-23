@@ -46,5 +46,5 @@ window.SOM_DATOS = {
 
   /* Dominio propio, cuando lo compres. Se usa sólo para mostrarlo en la
      barra de las capturas. Ejemplo: 'som.com.uy'                            */
-  dominio: '',
+  dominio: 'somlims.uy',
 };

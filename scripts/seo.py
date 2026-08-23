@@ -15,7 +15,7 @@ import re
 # CUANDO TENGAS EL DOMINIO, CAMBIÁ ESTA LÍNEA Y CORRÉ EL SCRIPT DE NUEVO.
 # Con barra al final.
 # --------------------------------------------------------------------------
-BASE = 'https://franciscopuchala.github.io/som-web/'
+BASE = 'https://somlims.uy/'
 
 AUTOR = 'Francisco Puchala'
 MARCA = 'SOM — Sistema de Organización de Muestras'
