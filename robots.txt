@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# El video pesa 4,2 MB y no aporta al índice.
+Disallow: /video/
+
+Sitemap: https://franciscopuchala.github.io/som-web/sitemap.xml
