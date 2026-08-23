@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" class="sin-js">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,16 +8,22 @@
       name="description"
       content="Qué más incluye SOM: fichas de clientes, conteo mensual para facturar, catálogo propio, usuarios y firmas, y respaldos automáticos. Escribinos por WhatsApp o por correo."
     />
-    <meta name="theme-color" content="#03081a" />
+    <meta name="theme-color" content="#05080f" />
     <link rel="icon" href="./img/emblema.png" type="image/png" />
-    <link rel="preload" href="./fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="./css/som.css" />
     <script>
-      document.documentElement.classList.remove('sin-js');
-      try {
-        var t = localStorage.getItem('som-tema');
-        if (t) document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {}
+      /* Antes del primer pintado: el tema guardado y la marca que habilita
+         las animaciones de entrada. Si el JavaScript no corre, la clase
+         nunca se agrega y no se esconde nada. */
+      (function () {
+        var r = document.documentElement;
+        r.classList.add('anim');
+        try {
+          var t = localStorage.getItem('som-tema');
+          if (t) r.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
     </script>
   </head>
 
@@ -48,50 +54,50 @@
       <!-- ================= QUÉ INCLUYE ================= -->
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">Qué más hace</p>
-          <h1 class="titular medida">Todo lo que rodea al circuito.</h1>
-          <p class="bajada medida" style="margin-top: 1.5rem">
+          <p class="rotulo" data-rev="fundido">Qué más hace</p>
+          <h1 class="titular medida" data-rev="subir">Todo lo que rodea al circuito.</h1>
+          <p class="bajada medida" data-rev="subir" style="margin-top: 1.5rem">
             El informe es el final del camino. Alrededor está lo que hace que ese
             camino se pueda repetir todos los días.
           </p>
 
           <div class="incluye" style="margin-top: 3rem" data-escalonar>
-            <div class="incluye__item revelar">
+            <div class="incluye__item" data-rev="subir">
               <h3>Fichas de clientes</h3>
               <p>
                 Datos de contacto e historial completo de todo lo que se les
                 analizó.
               </p>
             </div>
-            <div class="incluye__item revelar">
+            <div class="incluye__item" data-rev="subir">
               <h3>Conteo mensual</h3>
               <p>
                 Cuántos informes y análisis se le hicieron a cada cliente en el
                 mes. Es el dato para facturar, sin contarlo a mano.
               </p>
             </div>
-            <div class="incluye__item revelar">
+            <div class="incluye__item" data-rev="subir">
               <h3>Catálogo propio</h3>
               <p>
                 Ensayos, parámetros, metodologías y valores de referencia. El
                 catálogo de un laboratorio es suyo; no se reusa el de otro.
               </p>
             </div>
-            <div class="incluye__item revelar">
+            <div class="incluye__item" data-rev="subir">
               <h3>Usuarios, roles y firmas</h3>
               <p>
                 Cada analista con su usuario y su firma escaneada. El
                 administrador decide quién ve qué.
               </p>
             </div>
-            <div class="incluye__item revelar">
+            <div class="incluye__item" data-rev="subir">
               <h3>Respaldos automáticos</h3>
               <p>
                 Programados, más uno a demanda. Quedan en el disco que el
                 laboratorio elija.
               </p>
             </div>
-            <div class="incluye__item revelar">
+            <div class="incluye__item" data-rev="subir">
               <h3>Panel de control</h3>
               <p>
                 Muestras pendientes, listas para informe, informes del día y los
@@ -105,9 +111,9 @@
       <!-- ================= CAPTURAS ================= -->
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">En pantalla</p>
+          <p class="rotulo" data-rev="fundido">En pantalla</p>
 
-          <figure class="marco marco--realce revelar" style="margin: 0">
+          <figure class="marco marco--realce" data-rev="escala" style="margin: 0">
             <div class="marco__barra">
               <div class="marco__puntos"><i></i><i></i><i></i></div>
               <div class="marco__url">SOM — Panel de control</div>
@@ -123,7 +129,7 @@
           </figure>
 
           <div class="desparejo" style="margin-top: 2rem; align-items: stretch">
-            <figure class="marco marco--realce revelar" style="margin: 0">
+            <figure class="marco marco--realce" data-rev="escala" style="margin: 0">
               <div class="marco__barra">
                 <div class="marco__puntos"><i></i><i></i><i></i></div>
                 <div class="marco__url">SOM — Clientes</div>
@@ -137,7 +143,7 @@
                 height="1080"
               />
             </figure>
-            <figure class="marco marco--realce revelar" style="margin: 0">
+            <figure class="marco marco--realce" data-rev="escala" style="margin: 0">
               <div class="marco__barra">
                 <div class="marco__puntos"><i></i><i></i><i></i></div>
                 <div class="marco__url">SOM — Conteo mensual</div>
@@ -158,17 +164,17 @@
       <!-- ================= CONTACTO ================= -->
       <section class="seccion" id="escribinos">
         <div class="env">
-          <p class="rotulo">Contacto</p>
-          <h2 class="titulo-2 medida">
+          <p class="rotulo" data-rev="fundido">Contacto</p>
+          <h2 class="titulo-2 medida" data-rev="subir">
             Contanos cómo trabaja tu laboratorio hoy.
           </h2>
-          <p class="bajada medida" style="margin-top: 1.25rem">
+          <p class="bajada medida" data-rev="subir" style="margin-top: 1.25rem">
             Escribinos por donde te quede más cómodo. Te respondemos con lo que
             SOM puede hacer en tu caso, sin vueltas.
           </p>
 
-          <div class="canales" style="margin-top: 2.5rem">
-            <a class="canal" data-enlace="whatsapp" href="#escribinos">
+          <div class="canales" style="margin-top: 2.5rem" data-escalonar>
+            <a class="canal" data-rev="subir" data-enlace="whatsapp" href="#escribinos">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.13-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
               <span>
                 <strong>WhatsApp</strong>
@@ -176,7 +182,7 @@
               </span>
             </a>
 
-            <a class="canal" data-enlace="email" href="#escribinos">
+            <a class="canal" data-rev="subir" data-enlace="email" href="#escribinos">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6.5 9 6 9-6"/></svg>
               <span>
                 <strong>Correo</strong>
@@ -185,7 +191,7 @@
             </a>
           </div>
 
-          <form class="formulario" style="margin-top: 1.5rem" novalidate>
+          <form class="formulario" data-rev="subir" style="margin-top: 1.5rem" novalidate>
             <div class="doble">
               <div class="campo">
                 <label for="f-nombre">Tu nombre</label>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" class="sin-js">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,18 +8,22 @@
       name="description"
       content="Sistema de gestión para laboratorios de microbiología de alimentos. Del ingreso de la muestra al Informe de Ensayo firmado. Se instala en el laboratorio y funciona sin conexión a internet."
     />
-    <meta name="theme-color" content="#03081a" />
+    <meta name="theme-color" content="#05080f" />
     <link rel="icon" href="./img/emblema.png" type="image/png" />
-    <link rel="preload" href="./fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="./css/som.css" />
     <script>
-      /* Antes de pintar: saca la marca de "sin JavaScript" y aplica el tema
-         guardado, para que no haya un parpadeo blanco. */
-      document.documentElement.classList.remove('sin-js');
-      try {
-        var t = localStorage.getItem('som-tema');
-        if (t) document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {}
+      /* Antes del primer pintado: el tema guardado y la marca que habilita
+         las animaciones de entrada. Si el JavaScript no corre, la clase
+         nunca se agrega y no se esconde nada. */
+      (function () {
+        var r = document.documentElement;
+        r.classList.add('anim');
+        try {
+          var t = localStorage.getItem('som-tema');
+          if (t) r.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
     </script>
   </head>
 
@@ -51,27 +55,27 @@
       <section class="portada">
         <div class="env">
           <img
-            class="portada__emblema"
+            class="portada__emblema" data-rev="escala"
             src="./img/emblema.png"
             alt="Emblema de SOM"
             width="108"
             height="108"
           />
-          <p class="chip chip--acento">Sistema de Organización de Muestras</p>
-          <h1 class="titular" style="margin-top: 1.25rem">
+          <p class="chip chip--acento" data-rev="fundido">Sistema de Organización de Muestras</p>
+          <h1 class="titular" data-rev="subir" style="margin-top: 1.25rem">
             Del ingreso de la muestra<br />
             al <span class="destacado">Informe de Ensayo</span> firmado.
           </h1>
-          <p class="bajada medida" style="margin-top: 1.75rem">
+          <p class="bajada medida" data-rev="subir" style="margin-top: 1.75rem">
             SOM es el sistema de gestión para laboratorios de microbiología de
             alimentos. Cubre el circuito completo, se instala en un servidor del
             propio laboratorio y funciona sin conexión a internet.
           </p>
-          <div class="botonera" style="margin-top: 2.25rem">
+          <div class="botonera" style="margin-top: 2.25rem" data-rev="subir">
             <a class="boton" href="./circuito.html">Ver cómo funciona</a>
             <a class="boton boton--linea" href="./contacto.html">Escribinos</a>
           </div>
-          <div class="portada__pie">
+          <div class="portada__pie" data-rev="fundido">
             <span class="estado">Servidor local · sin conexión a internet</span>
             <span class="mono suave">Sin nube · sin cuenta · sin mensualidad por usuario</span>
           </div>
@@ -81,17 +85,17 @@
       <!-- ================= VIDEO ================= -->
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">Recorrido</p>
+          <p class="rotulo" data-rev="fundido">Recorrido</p>
           <div class="desparejo">
             <div>
-              <h2 class="titulo-2">Un minuto adentro del sistema</h2>
-              <p class="suave" style="margin-top: 1rem">
+              <h2 class="titulo-2" data-rev="subir">Un minuto adentro del sistema</h2>
+              <p class="suave" data-rev="subir" style="margin-top: 1rem">
                 El recorrido completo, de la primera pantalla al informe
                 terminado. Dura 1:09 y no arranca solo: apretá play cuando
                 quieras.
               </p>
             </div>
-            <div class="video">
+            <div class="video" data-rev="escala">
               <video
                 preload="none"
                 playsinline
@@ -117,41 +121,41 @@
       <!-- ================= EL PROBLEMA ================= -->
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">Cómo se trabaja hoy</p>
-          <h2 class="titulo-2 medida">
+          <p class="rotulo" data-rev="fundido">Cómo se trabaja hoy</p>
+          <h2 class="titulo-2 medida" data-rev="subir">
             No tenés un problema de análisis.<br />
             Tenés un problema de papeles.
           </h2>
 
           <div class="hoy" data-escalonar>
-            <div class="hoy__paso revelar">
+            <div class="hoy__paso" data-rev="subir">
               <span class="hoy__n">01</span>
               <strong>El cuaderno</strong>
               <p>La muestra que entra se anota a mano, y el número también.</p>
             </div>
-            <div class="hoy__paso revelar">
+            <div class="hoy__paso" data-rev="subir">
               <span class="hoy__n">02</span>
               <strong>La planilla</strong>
               <p>Los resultados se cargan de nuevo, en otro lado.</p>
             </div>
-            <div class="hoy__paso revelar">
+            <div class="hoy__paso" data-rev="subir">
               <span class="hoy__n">03</span>
               <strong>El procesador de texto</strong>
               <p>El informe se arma copiando todo por tercera vez.</p>
             </div>
-            <div class="hoy__paso revelar">
+            <div class="hoy__paso" data-rev="subir">
               <span class="hoy__n">04</span>
               <strong>El conteo del mes</strong>
               <p>Para facturar, se cuenta a mano cuántos análisis hizo cada cliente.</p>
             </div>
           </div>
 
-          <p class="remate medida revelar">
+          <p class="remate medida" data-rev="subir">
             Cada dato se escribe tres o cuatro veces, y cada vez puede salir
             distinto.
           </p>
 
-          <p class="suave medida revelar" style="margin-top: 1.5rem">
+          <p class="suave medida" data-rev="subir" style="margin-top: 1.5rem">
             Cuando llega una auditoría, reconstruir qué pasó con una muestra de
             hace ocho meses lleva una tarde.
           </p>
@@ -161,7 +165,7 @@
       <!-- ================= SIGUIENTE ================= -->
       <section class="seccion">
         <div class="env">
-          <a class="siguiente" href="./circuito.html">
+          <a class="siguiente" data-rev="escala" href="./circuito.html">
             <span>
               <small>Seguir</small>
               <strong>Las tres etapas del circuito</strong>

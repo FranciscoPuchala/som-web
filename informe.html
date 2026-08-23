@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" class="sin-js">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,16 +8,22 @@
       name="description"
       content="El entregable del laboratorio: el Informe de Ensayo sobre hoja membretada, con logo, acreditación y firma. Si la metodología está acreditada sale con sello, y esa decisión la toma el sistema."
     />
-    <meta name="theme-color" content="#03081a" />
+    <meta name="theme-color" content="#05080f" />
     <link rel="icon" href="./img/emblema.png" type="image/png" />
-    <link rel="preload" href="./fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="./css/som.css" />
     <script>
-      document.documentElement.classList.remove('sin-js');
-      try {
-        var t = localStorage.getItem('som-tema');
-        if (t) document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {}
+      /* Antes del primer pintado: el tema guardado y la marca que habilita
+         las animaciones de entrada. Si el JavaScript no corre, la clase
+         nunca se agrega y no se esconde nada. */
+      (function () {
+        var r = document.documentElement;
+        r.classList.add('anim');
+        try {
+          var t = localStorage.getItem('som-tema');
+          if (t) r.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
     </script>
   </head>
 
@@ -47,12 +53,12 @@
     <main id="contenido">
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">El entregable</p>
-          <h1 class="titular medida">
+          <p class="rotulo" data-rev="fundido">El entregable</p>
+          <h1 class="titular medida" data-rev="subir">
             Un laboratorio no compra un sistema. Compra que el informe salga
             bien.
           </h1>
-          <p class="bajada medida" style="margin-top: 1.5rem">
+          <p class="bajada medida" data-rev="subir" style="margin-top: 1.5rem">
             Todo el circuito existe para esto: una hoja que sale sobre el
             membrete del laboratorio, con su logo, su dirección, su número de
             acreditación y la firma del responsable.
@@ -62,7 +68,7 @@
 
       <section class="seccion">
         <div class="env">
-          <figure class="hoja" style="margin: 0">
+          <figure class="hoja" data-rev="escala" style="margin: 0">
             <img
               src="./img/informe.jpg"
               alt="Un Informe de Ensayo terminado sobre hoja membretada, con el recuadro de acreditación, los datos del cliente, las cuatro fechas y la tabla de resultados con sus valores de referencia."
@@ -76,7 +82,7 @@
               <span>datos inventados</span>
             </div>
           </figure>
-          <p class="suave mono" style="margin-top: 1rem; font-size: 0.8rem">
+          <p class="suave mono" data-rev="fundido" style="margin-top: 1rem; font-size: 0.8rem">
             Informe de una instalación de demostración. El laboratorio, el
             cliente y los resultados son inventados.
           </p>
@@ -85,17 +91,17 @@
 
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">El sello</p>
+          <p class="rotulo" data-rev="fundido">El sello</p>
           <div class="desparejo">
             <div>
-              <h2 class="titulo-2">La decisión no la toma quien imprime.</h2>
+              <h2 class="titulo-2" data-rev="subir">La decisión no la toma quien imprime.</h2>
             </div>
             <div>
-              <p class="bajada">
+              <p class="bajada" data-rev="subir">
                 Si el ensayo usa una metodología acreditada, el informe sale con
                 el sello. Si no la usa, sale sin él.
               </p>
-              <p class="suave" style="margin-top: 1.25rem">
+              <p class="suave" data-rev="subir" style="margin-top: 1.25rem">
                 Esa decisión la toma el sistema a partir del catálogo del
                 laboratorio, no la persona que aprieta imprimir. Es la diferencia
                 entre un criterio escrito una vez y un criterio que hay que
@@ -104,8 +110,8 @@
             </div>
           </div>
 
-          <div class="bifurca">
-            <div class="bifurca__lado revelar">
+          <div class="bifurca" data-escalonar>
+            <div class="bifurca__lado" data-rev="subir">
               <span class="chip chip--acento">Metodología acreditada</span>
               <h3 class="titulo-3">El informe sale con sello</h3>
               <p>
@@ -113,7 +119,7 @@
                 sistema imprime el sello sin que nadie se lo pida.
               </p>
             </div>
-            <div class="bifurca__lado revelar">
+            <div class="bifurca__lado" data-rev="subir">
               <span class="chip">Metodología no acreditada</span>
               <h3 class="titulo-3">El informe sale sin sello</h3>
               <p>
@@ -127,27 +133,27 @@
 
       <section class="seccion">
         <div class="env">
-          <p class="rotulo">Por qué sin internet</p>
-          <h2 class="titulo-2 medida" style="margin-bottom: 3rem">
+          <p class="rotulo" data-rev="fundido">Por qué sin internet</p>
+          <h2 class="titulo-2 medida" data-rev="subir" style="margin-bottom: 3rem">
             Se instala en el laboratorio. No en la nube de otro.
           </h2>
 
-          <div class="argumentos">
-            <article class="argumento">
+          <div class="argumentos" data-escalonar>
+            <article class="argumento" data-rev="subir">
               <h3 class="titulo-3">Los datos no salen del laboratorio</h3>
               <p>
                 Los clientes, sus resultados y sus informes quedan en un servidor
                 del laboratorio. No hay una copia en el servidor de otro.
               </p>
             </article>
-            <article class="argumento">
+            <article class="argumento" data-rev="subir">
               <h3 class="titulo-3">Se cae internet y se sigue trabajando</h3>
               <p>
                 El sistema no depende de la conexión. Las computadoras del
                 laboratorio entran por la red interna.
               </p>
             </article>
-            <article class="argumento">
+            <article class="argumento" data-rev="subir">
               <h3 class="titulo-3">Se carga una vez</h3>
               <p>
                 Lo que se escribe al ingresar la muestra no se vuelve a tipear
@@ -156,7 +162,7 @@
             </article>
           </div>
 
-          <p style="margin-top: 3rem">
+          <p data-rev="fundido" style="margin-top: 3rem">
             <span class="estado">Servidor local · sin conexión a internet</span>
           </p>
         </div>
@@ -164,7 +170,7 @@
 
       <section class="seccion">
         <div class="env">
-          <a class="siguiente" href="./contacto.html">
+          <a class="siguiente" data-rev="escala" href="./contacto.html">
             <span>
               <small>Seguir</small>
               <strong>Qué incluye y cómo escribirnos</strong>

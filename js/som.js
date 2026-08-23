@@ -7,8 +7,6 @@
   'use strict';
 
   var raiz = document.documentElement;
-  raiz.classList.remove('sin-js');
-
   var quietud = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ------------------------------------------------------------------
@@ -32,13 +30,79 @@
       try {
         localStorage.setItem('som-tema', nuevo);
       } catch (e) {
-        /* navegación privada: no pasa nada, vale para esta visita */
+        /* navegación privada: vale para esta visita y listo */
       }
     });
   }
 
   /* ------------------------------------------------------------------
-     2. Datos de contacto
+     2. Encabezado de vidrio
+     Al despegarse del tope se le cierra el vidrio y aparece la sombra.
+     ------------------------------------------------------------------ */
+
+  var cabecera = document.querySelector('.cabecera');
+  if (cabecera) {
+    var marcarCabecera = function () {
+      cabecera.classList.toggle('pegada', (window.pageYOffset || 0) > 8);
+    };
+    marcarCabecera();
+    window.addEventListener('scroll', marcarCabecera, { passive: true });
+  }
+
+  /* ------------------------------------------------------------------
+     3. Scroll reveal
+     Se dispara a medida que se baja y queda. No se rearma al subir: la
+     animación ocurre una vez por elemento, como corresponde.
+     ------------------------------------------------------------------ */
+
+  var animables = document.querySelectorAll('[data-rev]');
+
+  /* Escalona a los hermanos de una misma fila. */
+  Array.prototype.forEach.call(
+    document.querySelectorAll('[data-escalonar]'),
+    function (grupo) {
+      Array.prototype.forEach.call(grupo.children, function (hijo, i) {
+        hijo.style.setProperty('--d', i * 110 + 'ms');
+      });
+    }
+  );
+
+  if (!('IntersectionObserver' in window) || quietud.matches) {
+    Array.prototype.forEach.call(animables, function (el) {
+      el.classList.add('visto');
+    });
+  } else {
+    var mirón = new IntersectionObserver(
+      function (entradas) {
+        entradas.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('visto');
+          mirón.unobserve(e.target);
+          /* Terminada la entrada, se suelta el will-change. */
+          setTimeout(function () {
+            e.target.style.willChange = 'auto';
+          }, 1200);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 }
+    );
+
+    Array.prototype.forEach.call(animables, function (el) {
+      mirón.observe(el);
+    });
+  }
+
+  /* Lo que ya está en pantalla al cargar entra enseguida, sin esperar
+     a que alguien scrollee. */
+  window.addEventListener('load', function () {
+    Array.prototype.forEach.call(animables, function (el) {
+      var caja = el.getBoundingClientRect();
+      if (caja.top < window.innerHeight * 0.92) el.classList.add('visto');
+    });
+  });
+
+  /* ------------------------------------------------------------------
+     4. Datos de contacto
      Se leen de js/datos.js. Lo que falte queda como marcador visible.
      ------------------------------------------------------------------ */
 
@@ -131,73 +195,7 @@
   );
 
   /* ------------------------------------------------------------------
-     3. Entradas al hacer scroll
-     ------------------------------------------------------------------ */
-
-  var observables = document.querySelectorAll(
-    '.revelar, .etapa, .hoja, .argumento'
-  );
-
-  /* Sentido del scroll: bajando el contenido entra desde abajo, subiendo
-     entra desde arriba. La clase vive en <html> y la CSS la lee. */
-  var ultimoY = window.pageYOffset || 0;
-  var pendiente = false;
-
-  function anotarSentido() {
-    var y = window.pageYOffset || 0;
-    if (Math.abs(y - ultimoY) > 4) {
-      raiz.classList.toggle('sube', y < ultimoY);
-      raiz.classList.toggle('baja', y > ultimoY);
-      ultimoY = y;
-    }
-    pendiente = false;
-  }
-
-  if (!quietud.matches) {
-    window.addEventListener(
-      'scroll',
-      function () {
-        if (pendiente) return;
-        pendiente = true;
-        window.requestAnimationFrame(anotarSentido);
-      },
-      { passive: true }
-    );
-  }
-
-  if (!('IntersectionObserver' in window) || quietud.matches) {
-    Array.prototype.forEach.call(observables, function (el) {
-      el.classList.add('visible');
-    });
-  } else {
-    /* Va y viene: al entrar se muestra, al salir se rearma. Así la animación
-       vuelve a ocurrir cuando se scrollea para arriba. */
-    var mirón = new IntersectionObserver(
-      function (entradas) {
-        entradas.forEach(function (e) {
-          e.target.classList.toggle('visible', e.isIntersecting);
-        });
-      },
-      { rootMargin: '-6% 0px -10% 0px', threshold: 0.08 }
-    );
-
-    Array.prototype.forEach.call(observables, function (el) {
-      mirón.observe(el);
-    });
-  }
-
-  /* Escalona los grupos, para que no entren todos de golpe. */
-  Array.prototype.forEach.call(
-    document.querySelectorAll('[data-escalonar]'),
-    function (grupo) {
-      Array.prototype.forEach.call(grupo.children, function (hijo, i) {
-        hijo.style.setProperty('--demora', i * 90 + 'ms');
-      });
-    }
-  );
-
-  /* ------------------------------------------------------------------
-     4. Video — no baja un solo byte hasta que alguien aprieta play
+     5. Video — no baja un solo byte hasta que alguien aprieta play
      ------------------------------------------------------------------ */
 
   var caja = document.querySelector('.video');
@@ -222,7 +220,7 @@
   }
 
   /* ------------------------------------------------------------------
-     5. "El dato viaja"
+     6. "El dato viaja"
      La demostración del tercer argumento: lo que se escribe al ingresar
      la muestra no se vuelve a tipear — viaja hasta el informe.
      ------------------------------------------------------------------ */
@@ -261,7 +259,7 @@
           setTimeout(function () {
             p.classList.add('activa');
             if (i === paradas.length - 1) corriendo = false;
-          }, 500 + i * 900)
+          }, 600 + i * 950)
         );
       });
     }
@@ -270,13 +268,9 @@
       var ojo = new IntersectionObserver(
         function (entradas) {
           entradas.forEach(function (e) {
-            if (e.isIntersecting) {
-              correr();
-            } else {
-              /* Al salir se rearma, para que vuelva a correr si se sube. */
-              corriendo = false;
-              limpiar();
-            }
+            if (!e.isIntersecting) return;
+            correr();
+            ojo.unobserve(e.target);
           });
         },
         { threshold: 0.35 }
@@ -290,13 +284,13 @@
       repetir.addEventListener('click', function () {
         corriendo = false;
         limpiar();
-        setTimeout(correr, 120);
+        setTimeout(correr, 140);
       });
     }
   }
 
   /* ------------------------------------------------------------------
-     6. Formulario
+     7. Formulario
      Con endpoint configurado, envía por detrás. Sin endpoint, abre el
      correo con todo escrito. En los dos casos el mensaje llega.
      ------------------------------------------------------------------ */
