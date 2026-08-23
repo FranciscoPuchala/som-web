@@ -47,4 +47,10 @@ window.SOM_DATOS = {
   /* Dominio propio, cuando lo compres. Se usa sólo para mostrarlo en la
      barra de las capturas. Ejemplo: 'som.com.uy'                            */
   dominio: 'somlims.uy',
+
+  /* Sitio de ZENG, opcional. Si lo cargás, el nombre "ZENG" en Contacto
+     queda como enlace a su web. Si lo dejás vacío, "ZENG" se muestra
+     igual, como texto simple, sin enlace roto.
+     Ejemplo: 'https://zeng.com.uy'                                        */
+  zengUrl: '',
 };

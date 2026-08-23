@@ -1477,6 +1477,48 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
+   17b. Confían — mención con nombre, con color propio para que no se
+   pierda entre las tarjetas neutras del resto de la página.
+   -------------------------------------------------------------------------- */
+
+.confia {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  border-radius: var(--r-lg);
+  background: var(--accent-soft);
+  box-shadow: var(--sh-glow);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+.confia:hover {
+  transform: translateY(-3px);
+}
+
+.confia p {
+  margin: 0;
+}
+
+.confia a {
+  font-weight: 700;
+}
+
+.confia__marca {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  padding: 5px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* --------------------------------------------------------------------------
    18. Qué incluye
    -------------------------------------------------------------------------- */
 

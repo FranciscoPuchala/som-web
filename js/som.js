@@ -445,6 +445,21 @@
           '?subject=' +
           encodeURIComponent('Consulta por SOM');
       }
+
+      if (tipo === 'zeng') {
+        /* Sin URL cargada, el nombre queda como texto simple: no es un
+           error, es una elección válida. */
+        if (!D.zengUrl) {
+          el.removeAttribute('href');
+          el.style.pointerEvents = 'none';
+          el.style.color = 'inherit';
+          el.style.textDecoration = 'none';
+          return;
+        }
+        el.href = D.zengUrl;
+        el.rel = 'noopener';
+        el.target = '_blank';
+      }
     }
   );
 
