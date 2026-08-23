@@ -27,27 +27,34 @@ PAGINAS = {
         'SOM gestiona el circuito completo del laboratorio, del ingreso de la '
         'muestra al Informe de Ensayo firmado. Se instala en tu servidor y '
         'funciona sin internet.',
-        'img/panel.jpg',
+        'img/compartir.png',
     ),
     'circuito.html': (
         'Cómo funciona: ingreso, resultados e informes | SOM',
         'Las tres etapas de SOM: ingreso con numeración automática, carga de '
         'resultados con valor de referencia al lado, y reporte de análisis.',
-        'img/resultados.jpg',
+        'img/compartir.png',
     ),
     'informe.html': (
         'Informe de Ensayo con membrete y sello de acreditación | SOM',
         'El informe sale sobre la hoja membretada del laboratorio, con logo, '
         'acreditación y firma. Si la metodología está acreditada, el sistema '
         'pone el sello solo.',
-        'img/informe.jpg',
+        'img/compartir.png',
+    ),
+    'preguntas.html': (
+        'Preguntas frecuentes sobre SOM | Software de laboratorio',
+        'Si funciona sin internet, dónde quedan los datos, quién decide el '
+        'sello de acreditación y cómo sale el conteo del mes. Las dudas más '
+        'comunes, respondidas.',
+        'img/compartir.png',
     ),
     'contacto.html': (
         'Qué incluye SOM y cómo contactarnos | Software de laboratorio',
         'Fichas de clientes, conteo mensual para facturar, catálogo propio de '
         'ensayos, usuarios con firma y respaldos automáticos. Escribinos por '
         'WhatsApp o por correo.',
-        'img/conteo.jpg',
+        'img/compartir.png',
     ),
 }
 
@@ -92,7 +99,7 @@ def bloque(archivo, titulo, desc, imagen):
         ']}'
     )
 
-    return '\n'.join([
+    partes = [
         '    ' + INI,
         '    <title>' + titulo + '</title>',
         '    <meta name="description" content="' + desc + '" />',
@@ -108,16 +115,52 @@ def bloque(archivo, titulo, desc, imagen):
         '    <meta property="og:description" content="' + desc + '" />',
         '    <meta property="og:url" content="' + url + '" />',
         '    <meta property="og:image" content="' + img + '" />',
-        '    <meta property="og:image:width" content="1920" />',
-        '    <meta property="og:image:height" content="1080" />',
+        '    <meta property="og:image:width" content="1200" />',
+        '    <meta property="og:image:height" content="630" />',
+        '    <meta property="og:image:alt" content="SOM — Sistema de '
+        'Organización de Muestras. Del ingreso de la muestra al Informe de '
+        'Ensayo firmado." />',
         '    <meta name="twitter:card" content="summary_large_image" />',
         '    <meta name="twitter:title" content="' + titulo + '" />',
         '    <meta name="twitter:description" content="' + desc + '" />',
         '    <meta name="twitter:image" content="' + img + '" />',
         '',
         '    <script type="application/ld+json">' + ld + '</script>',
-        '    ' + FIN,
-    ])
+    ]
+
+    # La página de preguntas lleva además marcado FAQPage: es lo que puede
+    # hacer que Google muestre las preguntas desplegables en el resultado.
+    if archivo == 'preguntas.html':
+        partes.append('    <script type="application/ld+json">'
+                      + faq_ld() + '</script>')
+
+    partes.append('    ' + FIN)
+    return '\n'.join(partes)
+
+
+def faq_ld():
+    """Saca las preguntas del propio HTML.
+
+    Así el marcado y lo que se ve en pantalla no se pueden despegar: si
+    mañana cambia una respuesta, el marcado cambia con ella.
+    """
+    import json
+    html = io.open('preguntas.html', encoding='utf-8').read()
+    pares = re.findall(
+        r'<summary>(.*?)</summary>.*?<div class="faq__cuerpo">(.*?)</div>',
+        html, re.S)
+    items = []
+    for pregunta, respuesta in pares:
+        texto = re.sub(r'<[^>]+>', ' ', respuesta)
+        items.append({
+            '@type': 'Question',
+            'name': ' '.join(pregunta.split()),
+            'acceptedAnswer': {'@type': 'Answer', 'text': ' '.join(texto.split())},
+        })
+    return json.dumps(
+        {'@context': 'https://schema.org', '@type': 'FAQPage',
+         'mainEntity': items},
+        ensure_ascii=False, separators=(',', ':'))
 
 
 def aplicar():
@@ -151,7 +194,8 @@ def sitemap():
     hoy = date.today().isoformat()
     filas = []
     for archivo, prioridad in [('index.html', '1.0'), ('circuito.html', '0.8'),
-                               ('informe.html', '0.9'), ('contacto.html', '0.7')]:
+                               ('informe.html', '0.9'), ('preguntas.html', '0.8'),
+                               ('contacto.html', '0.7')]:
         url = BASE + ('' if archivo == 'index.html' else archivo)
         filas.append(
             '  <url>\n'
@@ -164,7 +208,7 @@ def sitemap():
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            + '\n'.join(filas) + '\n</urlset>\n')
     io.open('sitemap.xml', 'w', encoding='utf-8').write(xml)
-    print('  sitemap.xml      4 URLs')
+    print('  sitemap.xml      %d URLs' % len(filas))
 
 
 def robots():

@@ -1693,7 +1693,97 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   20. Marcadores para completar
+   20. Preguntas frecuentes
+   Con <details>: se abren y cierran sin una línea de JavaScript, y el
+   buscador lee el contenido aunque estén cerradas.
+   -------------------------------------------------------------------------- */
+
+.faq {
+  display: grid;
+  gap: 1rem;
+}
+
+.faq__item {
+  border: 1px solid var(--linea);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--sh-1);
+  overflow: hidden;
+  transition: all var(--t) var(--ease);
+}
+.faq__item:hover {
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--linea));
+  background: var(--panel-2);
+  box-shadow: var(--sh-2);
+}
+.faq__item[open] {
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--linea));
+  box-shadow: var(--sh-2);
+}
+
+.faq__item summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.4rem 1.6rem;
+  cursor: pointer;
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  list-style: none;
+  transition: color var(--t) var(--ease);
+}
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+.faq__item summary:hover,
+.faq__item[open] summary {
+  color: var(--accent);
+}
+
+/* El signo de más que gira hasta ser una cruz. */
+.faq__item summary::after {
+  content: '';
+  flex: none;
+  margin-left: auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: currentColor;
+  transition: transform 0.4s var(--ease);
+  -webkit-mask: no-repeat center /
+    contain
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+  mask: no-repeat center / contain
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+}
+.faq__item[open] summary::after {
+  transform: rotate(135deg);
+}
+
+.faq__cuerpo {
+  padding: 0 1.6rem 1.5rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .faq__item[open] .faq__cuerpo {
+    animation: desplegar 0.35s var(--ease-out) both;
+  }
+}
+
+@keyframes desplegar {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   21. Marcadores para completar
    -------------------------------------------------------------------------- */
 
 .marcador {
@@ -1709,7 +1799,7 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   21. Cierre de página
+   22. Cierre de página
    -------------------------------------------------------------------------- */
 
 .siguiente {
@@ -1803,7 +1893,7 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   22. Scroll reveal
+   23. Scroll reveal
    Se dispara al bajar y queda. Tres variantes: subir, escala y fundido.
    La clase .anim la pone el script del <head>, antes del primer pintado, para
    que no haya un parpadeo de contenido visible.
@@ -1834,7 +1924,7 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   23. Ampliar capturas
+   24. Ampliar capturas
    Una captura de 1920px metida en una columna de 700px no se lee. Cada una
    lleva un enlace a la imagen completa: sin JavaScript la abre en una
    pestaña, con JavaScript la abre en el visor de acá abajo.
@@ -2040,7 +2130,7 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   24. Movimiento ambiente
+   25. Movimiento ambiente
    Cosas que se mueven solas, sin que nadie toque nada. Todas lentas y de
    baja amplitud: la página tiene que estar viva, no inquieta. Todo corre
    sobre transform y opacity, que el navegador compone en la placa de video.
@@ -2267,7 +2357,7 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   25. Movimiento reducido — todo se apaga, nada se pierde
+   26. Movimiento reducido — todo se apaga, nada se pierde
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2326,7 +2416,7 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   26. Impresión
+   27. Impresión
    -------------------------------------------------------------------------- */
 
 @media print {
