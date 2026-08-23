@@ -1,0 +1,69 @@
+# ==========================================================================
+# SOM — configuración para Apache (Bluehost)
+# GitHub Pages hace todo esto solo; un hosting compartido no.
+# ==========================================================================
+
+# --- Forzar HTTPS ---------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # Sin www. Si preferís con www, comentá estas dos líneas y descomentá
+  # las dos de abajo.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+  # RewriteCond %{HTTP_HOST} !^www\. [NC]
+  # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+# --- Comprimir texto ------------------------------------------------------
+# Sin esto, el CSS de 60 KB viaja entero. Con esto viaja en unos 12 KB.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE image/svg+xml application/json
+</IfModule>
+
+# --- Caché ----------------------------------------------------------------
+# Las tipografías y las capturas no cambian nunca: que el navegador no las
+# vuelva a pedir. El HTML sí se revalida, para que los cambios se vean.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 7 days"
+  ExpiresByType application/javascript    "access plus 7 days"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType video/mp4                 "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(woff2|jpg|png|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Un mínimo de higiene
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# --- Tipos MIME que algunos Apache viejos no traen ------------------------
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType video/mp4 .mp4
+</IfModule>
+
+# --- No listar el contenido de las carpetas -------------------------------
+Options -Indexes
+
+# --- Nada de archivos internos por web ------------------------------------
+<FilesMatch "^(\.htaccess|\.gitignore|README\.md|.*\.md)$">
+  Require all denied
+</FilesMatch>
