@@ -193,7 +193,170 @@
   }
 
   /* ------------------------------------------------------------------
-     5. Datos de contacto
+     5. Visor de capturas
+     Cada captura tiene un enlace a la imagen completa. Sin este bloque el
+     enlace igual funciona: abre el archivo. Con este bloque, lo abre en un
+     visor con zoom, arrastre y navegación entre capturas.
+     ------------------------------------------------------------------ */
+
+  var lupas = document.querySelectorAll('.lupa');
+
+  if (lupas.length && typeof HTMLDialogElement === 'function') {
+    /* Una ficha por captura de la página. */
+    var capturas = Array.prototype.map.call(lupas, function (a) {
+      var fig = a.closest('figure') || a.parentNode;
+      var img = fig.querySelector('img');
+      var rot = fig.querySelector('.marco__url');
+      return {
+        url: a.getAttribute('href'),
+        titulo: rot
+          ? rot.textContent.trim()
+          : (img && img.getAttribute('alt')) || 'Captura',
+        alt: (img && img.getAttribute('alt')) || '',
+      };
+    });
+
+    var visor = document.createElement('dialog');
+    visor.className = 'visor';
+    visor.innerHTML =
+      '<div class="visor__caja">' +
+      '<div class="visor__barra">' +
+      '<button class="visor__btn" data-v="antes" type="button" aria-label="Captura anterior">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>' +
+      '<button class="visor__btn" data-v="luego" type="button" aria-label="Captura siguiente">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>' +
+      '<p class="visor__titulo"></p>' +
+      '<button class="visor__btn" data-v="zoom" type="button" aria-label="Ver al tamaño real">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M8 11h6M11 8v6"/></svg></button>' +
+      '<button class="visor__btn" data-v="cerrar" type="button" aria-label="Cerrar el visor">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
+      '</div>' +
+      '<div class="visor__lienzo"><img alt=""></div>' +
+      '<div class="visor__pie">' +
+      '<span class="visor__ayuda">Clic en la imagen para acercar &middot; ' +
+      '<kbd>&larr;</kbd> <kbd>&rarr;</kbd> para cambiar &middot; <kbd>Esc</kbd> para cerrar</span>' +
+      '<span class="visor__cuenta"></span>' +
+      '</div>' +
+      '</div>';
+    document.body.appendChild(visor);
+
+    var vImg = visor.querySelector('.visor__lienzo img');
+    var vLienzo = visor.querySelector('.visor__lienzo');
+    var vTitulo = visor.querySelector('.visor__titulo');
+    var vCuenta = visor.querySelector('.visor__cuenta');
+    var vAntes = visor.querySelector('[data-v="antes"]');
+    var vLuego = visor.querySelector('[data-v="luego"]');
+    var indice = 0;
+
+    function mostrar(i) {
+      indice = (i + capturas.length) % capturas.length;
+      var c = capturas[indice];
+      vImg.src = c.url;
+      vImg.alt = c.alt;
+      vTitulo.textContent = c.titulo;
+      vCuenta.textContent = indice + 1 + ' / ' + capturas.length;
+      visor.classList.remove('cerca');
+      vLienzo.scrollTop = 0;
+      vLienzo.scrollLeft = 0;
+      var solaUna = capturas.length < 2;
+      vAntes.disabled = solaUna;
+      vLuego.disabled = solaUna;
+    }
+
+    function alternarZoom() {
+      var acercando = !visor.classList.contains('cerca');
+      visor.classList.toggle('cerca', acercando);
+      if (acercando) {
+        /* Al acercar, quedar centrado en vez de en la esquina. */
+        vLienzo.scrollLeft = (vLienzo.scrollWidth - vLienzo.clientWidth) / 2;
+        vLienzo.scrollTop = (vLienzo.scrollHeight - vLienzo.clientHeight) / 4;
+      }
+    }
+
+    function abrir(i) {
+      mostrar(i);
+      document.body.style.overflow = 'hidden';
+      visor.showModal();
+    }
+
+    Array.prototype.forEach.call(lupas, function (a, i) {
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        abrir(i);
+      });
+
+      /* La imagen dentro de la página también abre el visor. */
+      var fig = a.closest('figure') || a.parentNode;
+      var img = fig.querySelector('img');
+      if (img) {
+        img.addEventListener('click', function () {
+          abrir(i);
+        });
+      }
+    });
+
+    visor.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-v]');
+      if (b) {
+        var q = b.getAttribute('data-v');
+        if (q === 'cerrar') visor.close();
+        if (q === 'antes') mostrar(indice - 1);
+        if (q === 'luego') mostrar(indice + 1);
+        if (q === 'zoom') alternarZoom();
+        return;
+      }
+      if (ev.target === vImg) {
+        alternarZoom();
+        return;
+      }
+      /* Un clic en el vacío cierra. */
+      if (ev.target === visor || ev.target === vLienzo) visor.close();
+    });
+
+    visor.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowLeft') {
+        ev.preventDefault();
+        mostrar(indice - 1);
+      }
+      if (ev.key === 'ArrowRight') {
+        ev.preventDefault();
+        mostrar(indice + 1);
+      }
+    });
+
+    /* Arrastrar con el mouse cuando está acercada. */
+    var arrastre = null;
+    vLienzo.addEventListener('pointerdown', function (ev) {
+      if (!visor.classList.contains('cerca') || ev.target !== vImg) return;
+      arrastre = {
+        x: ev.clientX,
+        y: ev.clientY,
+        l: vLienzo.scrollLeft,
+        t: vLienzo.scrollTop,
+      };
+      vLienzo.classList.add('arrastrando');
+      vLienzo.setPointerCapture(ev.pointerId);
+    });
+    vLienzo.addEventListener('pointermove', function (ev) {
+      if (!arrastre) return;
+      vLienzo.scrollLeft = arrastre.l - (ev.clientX - arrastre.x);
+      vLienzo.scrollTop = arrastre.t - (ev.clientY - arrastre.y);
+    });
+    ['pointerup', 'pointercancel'].forEach(function (n) {
+      vLienzo.addEventListener(n, function () {
+        arrastre = null;
+        vLienzo.classList.remove('arrastrando');
+      });
+    });
+
+    /* Al cerrar, la página de atrás vuelve a scrollear. */
+    visor.addEventListener('close', function () {
+      document.body.style.overflow = '';
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     6. Datos de contacto
      Se leen de js/datos.js. Lo que falte queda como marcador visible.
      ------------------------------------------------------------------ */
 
@@ -286,7 +449,7 @@
   );
 
   /* ------------------------------------------------------------------
-     6. Video — no baja un solo byte hasta que alguien aprieta play
+     7. Video — no baja un solo byte hasta que alguien aprieta play
      ------------------------------------------------------------------ */
 
   var caja = document.querySelector('.video');
@@ -311,7 +474,7 @@
   }
 
   /* ------------------------------------------------------------------
-     7. "El dato viaja"
+     8. "El dato viaja"
      La demostración del tercer argumento: lo que se escribe al ingresar
      la muestra no se vuelve a tipear — viaja hasta el informe.
      ------------------------------------------------------------------ */
@@ -404,7 +567,7 @@
   }
 
   /* ------------------------------------------------------------------
-     8. Formulario
+     9. Formulario
      Con endpoint configurado, envía por detrás. Sin endpoint, abre el
      correo con todo escrito. En los dos casos el mensaje llega.
      ------------------------------------------------------------------ */
