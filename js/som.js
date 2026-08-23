@@ -102,7 +102,98 @@
   });
 
   /* ------------------------------------------------------------------
-     4. Datos de contacto
+     4. Movimiento ambiente
+     Nada de esto es contenido: si no corre, no se pierde información.
+     Por eso se arma desde acá y no ensucia el HTML.
+     ------------------------------------------------------------------ */
+
+  if (!quietud.matches) {
+    /* --- Barra de avance del scroll --- */
+    var barra = document.createElement('div');
+    barra.className = 'avance';
+    document.body.appendChild(barra);
+
+    var pidiendo = false;
+    var pintarAvance = function () {
+      var alto =
+        document.documentElement.scrollHeight - window.innerHeight;
+      var r = alto > 0 ? (window.pageYOffset || 0) / alto : 0;
+      barra.style.transform = 'scaleX(' + Math.min(1, Math.max(0, r)) + ')';
+      pidiendo = false;
+    };
+    pintarAvance();
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (pidiendo) return;
+        pidiendo = true;
+        window.requestAnimationFrame(pintarAvance);
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', pintarAvance, { passive: true });
+
+    /* --- Chispas que suben por la portada --- */
+    var portada = document.querySelector('.portada');
+    if (portada) {
+      var campo = document.createElement('div');
+      campo.className = 'chispas';
+      campo.setAttribute('aria-hidden', 'true');
+
+      for (var i = 0; i < 14; i++) {
+        var ch = document.createElement('span');
+        ch.className = 'chispa';
+        ch.style.left = (Math.random() * 100).toFixed(2) + '%';
+        ch.style.setProperty('--tam', (2 + Math.random() * 4).toFixed(1) + 'px');
+        ch.style.setProperty('--vida', (14 + Math.random() * 14).toFixed(1) + 's');
+        ch.style.setProperty('--espera', (Math.random() * -22).toFixed(1) + 's');
+        ch.style.setProperty('--alto', (45 + Math.random() * 45).toFixed(0) + 'vh');
+        ch.style.setProperty(
+          '--desvio',
+          (Math.random() * 90 - 45).toFixed(0) + 'px'
+        );
+        ch.style.setProperty('--brillo', (0.2 + Math.random() * 0.4).toFixed(2));
+        campo.appendChild(ch);
+      }
+      portada.insertBefore(campo, portada.firstChild);
+    }
+
+    /* --- Anillos que salen del emblema --- */
+    var emblema = document.querySelector('.portada__emblema');
+    if (emblema && emblema.parentNode) {
+      var nido = document.createElement('div');
+      nido.style.position = 'relative';
+      nido.style.display = 'inline-block';
+      nido.setAttribute('aria-hidden', 'false');
+      emblema.parentNode.insertBefore(nido, emblema);
+      nido.appendChild(emblema);
+      for (var a = 0; a < 3; a++) {
+        var anillo = document.createElement('span');
+        anillo.className = 'aureola';
+        anillo.setAttribute('aria-hidden', 'true');
+        nido.appendChild(anillo);
+      }
+    }
+
+    /* --- Reflejo que sigue al cursor sobre las tarjetas --- */
+    var tarjetas = document.querySelectorAll(
+      '.hoy__paso, .incluye__item, .argumento, .bifurca__lado, .canal, .parada'
+    );
+    Array.prototype.forEach.call(tarjetas, function (t) {
+      t.addEventListener(
+        'pointermove',
+        function (ev) {
+          var c = t.getBoundingClientRect();
+          t.style.setProperty('--mx', ((ev.clientX - c.left) / c.width) * 100 + '%');
+          t.style.setProperty('--my', ((ev.clientY - c.top) / c.height) * 100 + '%');
+        },
+        { passive: true }
+      );
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     5. Datos de contacto
      Se leen de js/datos.js. Lo que falte queda como marcador visible.
      ------------------------------------------------------------------ */
 
@@ -195,7 +286,7 @@
   );
 
   /* ------------------------------------------------------------------
-     5. Video — no baja un solo byte hasta que alguien aprieta play
+     6. Video — no baja un solo byte hasta que alguien aprieta play
      ------------------------------------------------------------------ */
 
   var caja = document.querySelector('.video');
@@ -220,7 +311,7 @@
   }
 
   /* ------------------------------------------------------------------
-     6. "El dato viaja"
+     7. "El dato viaja"
      La demostración del tercer argumento: lo que se escribe al ingresar
      la muestra no se vuelve a tipear — viaja hasta el informe.
      ------------------------------------------------------------------ */
@@ -264,13 +355,31 @@
       });
     }
 
+    /* Mientras el bloque está en pantalla el recorrido se repite solo. Al
+       salir se detiene, para no gastar nada de fondo. */
+    var bucle = null;
+
+    function arrancarBucle() {
+      correr();
+      if (bucle || quietud.matches) return;
+      bucle = setInterval(function () {
+        corriendo = false;
+        limpiar();
+        setTimeout(correr, 400);
+      }, 5200);
+    }
+
+    function pararBucle() {
+      clearInterval(bucle);
+      bucle = null;
+    }
+
     if ('IntersectionObserver' in window) {
       var ojo = new IntersectionObserver(
         function (entradas) {
           entradas.forEach(function (e) {
-            if (!e.isIntersecting) return;
-            correr();
-            ojo.unobserve(e.target);
+            if (e.isIntersecting) arrancarBucle();
+            else pararBucle();
           });
         },
         { threshold: 0.35 }
@@ -279,6 +388,11 @@
     } else {
       correr();
     }
+
+    /* Con la pestaña de fondo no tiene sentido seguir animando. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) pararBucle();
+    });
 
     if (repetir) {
       repetir.addEventListener('click', function () {
@@ -290,7 +404,7 @@
   }
 
   /* ------------------------------------------------------------------
-     7. Formulario
+     8. Formulario
      Con endpoint configurado, envía por detrás. Sin endpoint, abre el
      correo con todo escrito. En los dos casos el mensaje llega.
      ------------------------------------------------------------------ */
