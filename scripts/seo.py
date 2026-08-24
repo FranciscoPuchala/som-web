@@ -23,7 +23,7 @@ MARCA = 'SOM — Sistema de Organización de Muestras'
 # Por página: archivo -> (title, description, imagen para compartir)
 PAGINAS = {
     'index.html': (
-        'Software para laboratorios de microbiología de alimentos | SOM',
+        'SOM — Software para laboratorios de microbiología de alimentos',
         'SOM gestiona el circuito completo del laboratorio, del ingreso de la '
         'muestra al Informe de Ensayo firmado. Se instala en tu servidor y '
         'funciona sin internet.',
