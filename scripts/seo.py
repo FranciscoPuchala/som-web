@@ -30,27 +30,27 @@ PAGINAS = {
         'img/compartir.png',
     ),
     'circuito.html': (
-        'Cómo funciona: ingreso, resultados e informes | SOM',
+        'SOM — Cómo funciona: ingreso, resultados e informes',
         'Las tres etapas de SOM: ingreso con numeración automática, carga de '
         'resultados con valor de referencia al lado, y reporte de análisis.',
         'img/compartir.png',
     ),
     'informe.html': (
-        'Informe de Ensayo con membrete y sello de acreditación | SOM',
+        'SOM — Informe de Ensayo con sello de acreditación',
         'El informe sale sobre la hoja membretada del laboratorio, con logo, '
         'acreditación y firma. Si la metodología está acreditada, el sistema '
         'pone el sello solo.',
         'img/compartir.png',
     ),
     'preguntas.html': (
-        'Preguntas frecuentes sobre SOM | Software de laboratorio',
+        'SOM — Preguntas frecuentes del software de laboratorio',
         'Si funciona sin internet, dónde quedan los datos, quién decide el '
         'sello de acreditación y cómo sale el conteo del mes. Las dudas más '
         'comunes, respondidas.',
         'img/compartir.png',
     ),
     'contacto.html': (
-        'Qué incluye SOM y cómo contactarnos | Software de laboratorio',
+        'SOM — Contacto y qué incluye el software de laboratorio',
         'Fichas de clientes, conteo mensual para facturar, catálogo propio de '
         'ensayos, usuarios con firma y respaldos automáticos. Escribinos por '
         'WhatsApp o por correo.',
