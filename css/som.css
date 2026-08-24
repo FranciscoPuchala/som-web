@@ -566,21 +566,133 @@ a:hover {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
+/* --- Botón hamburguesa ---------------------------------------------------
+   Sólo aparece en pantallas chicas. Las tres rayas se convierten en una
+   cruz al abrir: la de arriba y la de abajo rotan hasta cruzarse y la del
+   medio se desvanece. */
+
+.menu {
+  display: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border: 1px solid var(--linea);
+  border-radius: 50%;
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+}
+.menu:hover {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.menu__cajita {
+  position: relative;
+  width: 18px;
+  height: 12px;
+}
+
+.menu__cajita span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.35s var(--ease), opacity 0.2s var(--ease);
+}
+.menu__cajita span:nth-child(1) {
+  top: 0;
+}
+.menu__cajita span:nth-child(2) {
+  top: 5px;
+}
+.menu__cajita span:nth-child(3) {
+  top: 10px;
+}
+
+.menu[aria-expanded='true'] .menu__cajita span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+.menu[aria-expanded='true'] .menu__cajita span:nth-child(2) {
+  opacity: 0;
+}
+.menu[aria-expanded='true'] .menu__cajita span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
 @media (max-width: 46rem) {
   .cabecera__fila {
-    height: auto;
-    padding-block: 0.7rem;
-    flex-wrap: wrap;
+    height: var(--header-h);
   }
-  .nav {
+
+  .menu {
+    display: grid;
+    order: 2;
+  }
+
+  .tema {
     order: 3;
-    width: 100%;
+  }
+
+  /* Con JavaScript el menú arranca cerrado y se despliega como panel.
+     Sin JavaScript la clase nav-js nunca se agrega y la navegación queda
+     visible, en la fila que se desliza de siempre. */
+  .nav-js .nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--linea);
+    background: var(--vidrio);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: var(--sh-2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.28s var(--ease), transform 0.28s var(--ease),
+      visibility 0.28s;
+  }
+
+  .nav-js .cabecera.abierta .nav {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-js .nav a {
+    padding: 0.85rem 1rem;
+    border-radius: var(--r-sm);
+    font-size: 1rem;
+  }
+
+  /* Sin JavaScript la clase nav-js no existe, así que no se aplica nada de
+     lo de arriba: la navegación queda a la vista y se desliza al costado. */
+  .nav {
     overflow-x: auto;
     scrollbar-width: none;
-    padding-bottom: 0.2rem;
   }
   .nav::-webkit-scrollbar {
     display: none;
+  }
+  .nav-js .nav {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 46rem) and (prefers-reduced-motion: reduce) {
+  .nav-js .nav {
+    transition: none;
   }
 }
 

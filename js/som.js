@@ -50,6 +50,69 @@
   }
 
   /* ------------------------------------------------------------------
+     2b. Menú del celular
+     Las tres rayas. Se cierra al elegir una página, con Escape, tocando
+     afuera, o al agrandar la ventana hasta el ancho de escritorio.
+     ------------------------------------------------------------------ */
+
+  var botonMenu = document.querySelector('.menu');
+  var navegacion = document.querySelector('.nav');
+
+  if (botonMenu && navegacion && cabecera) {
+    var abrirCerrar = function (abrir) {
+      cabecera.classList.toggle('abierta', abrir);
+      botonMenu.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      botonMenu.setAttribute(
+        'aria-label',
+        abrir ? 'Cerrar el menú' : 'Abrir el menú'
+      );
+    };
+
+    var estaAbierto = function () {
+      return cabecera.classList.contains('abierta');
+    };
+
+    botonMenu.addEventListener('click', function () {
+      abrirCerrar(!estaAbierto());
+    });
+
+    /* Al elegir una página, el panel se cierra solo. */
+    Array.prototype.forEach.call(
+      navegacion.querySelectorAll('a'),
+      function (a) {
+        a.addEventListener('click', function () {
+          abrirCerrar(false);
+        });
+      }
+    );
+
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && estaAbierto()) {
+        abrirCerrar(false);
+        botonMenu.focus();
+      }
+    });
+
+    document.addEventListener('click', function (ev) {
+      if (!estaAbierto()) return;
+      if (cabecera.contains(ev.target)) return;
+      abrirCerrar(false);
+    });
+
+    /* Si se agranda la ventana con el menú abierto, el panel deja de
+       existir: hay que dejar el botón en estado coherente. */
+    var anchoEscritorio = window.matchMedia('(min-width: 46.0625rem)');
+    var alCambiarAncho = function (e) {
+      if (e.matches && estaAbierto()) abrirCerrar(false);
+    };
+    if (anchoEscritorio.addEventListener) {
+      anchoEscritorio.addEventListener('change', alCambiarAncho);
+    } else if (anchoEscritorio.addListener) {
+      anchoEscritorio.addListener(alCambiarAncho);
+    }
+  }
+
+  /* ------------------------------------------------------------------
      3. Scroll reveal
      Se dispara a medida que se baja y queda. No se rearma al subir: la
      animación ocurre una vez por elemento, como corresponde.
