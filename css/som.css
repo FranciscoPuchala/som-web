@@ -2511,6 +2511,172 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
+   25b. Oferta — un mes gratis
+
+   El mismo mensaje en dos tamaños: una franja arriba de todo, en las cinco
+   páginas, y un bloque grande en la portada y en Contacto. Los dos usan el
+   gradiente de los botones: llaman la atención porque son lo único lleno de
+   color en una página hecha de vidrio, no porque griten.
+   -------------------------------------------------------------------------- */
+
+.oferta-franja {
+  position: relative;
+  z-index: 51; /* por encima del vidrio de la cabecera, que es 50 */
+  overflow: hidden;
+  background: var(--grad-boton);
+  color: #fff;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Un brillo que la cruza cada tanto. Lo apaga la sección 26 si el sistema
+   pide menos movimiento. */
+.oferta-franja::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.24) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  animation: oferta-brillo 7s var(--ease) 1.5s infinite;
+  pointer-events: none;
+}
+
+.oferta-franja__env {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.9rem;
+  padding: 0.6rem var(--rail);
+}
+
+.oferta-franja strong {
+  font-weight: 700;
+}
+
+.oferta-franja a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--r-pill);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--t) var(--ease),
+    border-color var(--t) var(--ease);
+}
+.oferta-franja a:hover,
+.oferta-franja a:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #fff;
+  color: #fff;
+}
+.oferta-franja svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+@keyframes oferta-brillo {
+  0% {
+    transform: translateX(-100%);
+  }
+  30%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* El bloque grande */
+.oferta {
+  position: relative;
+  isolation: isolate;
+  max-width: 46rem;
+  padding: clamp(1.4rem, 1rem + 1.6vw, 2.2rem);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--sh-glow);
+}
+
+/* Borde de gradiente que corre despacio: es lo que lo separa del resto de los
+   paneles del sitio, que tienen el borde quieto y gris. */
+.oferta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    var(--accent),
+    var(--accent-2),
+    var(--accent),
+    var(--accent-2)
+  );
+  background-size: 300% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: oferta-borde 9s linear infinite;
+}
+
+@keyframes oferta-borde {
+  to {
+    background-position: 300% 0;
+  }
+}
+
+.oferta__titulo {
+  margin-top: 1rem;
+  font-size: clamp(1.35rem, 1.05rem + 1.2vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: -0.026em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.oferta__bajada {
+  max-width: 52ch;
+  margin-top: 0.8rem;
+  color: var(--muted);
+}
+
+.oferta .boton {
+  margin-top: 1.4rem;
+  white-space: nowrap;
+}
+.oferta .boton svg {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
+/* En modo claro, el gradiente celeste del sitio sobre fondo blanco casi no se
+   lee: contraste 1,9 a 1. Está bien en los titulares gigantes, pero acá es la
+   frase que tiene que leerse sí o sí, así que usa los mismos dos colores en su
+   versión oscura, que son los acentos del propio tema claro. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .oferta__titulo .destacado {
+    background-image: linear-gradient(115deg, #0d7a6f 0%, #1c6fd0 100%);
+  }
+}
+:root[data-theme='light'] .oferta__titulo .destacado {
+  background-image: linear-gradient(115deg, #0d7a6f 0%, #1c6fd0 100%);
+}
+
+/* --------------------------------------------------------------------------
    26. Movimiento reducido — todo se apaga, nada se pierde
    -------------------------------------------------------------------------- */
 
