@@ -23,7 +23,7 @@ MARCA = 'SOM — Sistema de Organización de Muestras'
 # Por página: archivo -> (title, description, imagen para compartir)
 PAGINAS = {
     'index.html': (
-        'SOM — Software para laboratorios de microbiología de alimentos',
+        'SOM — Software para laboratorios de microbiología',
         'SOM gestiona el circuito completo del laboratorio, del ingreso de la '
         'muestra al Informe de Ensayo firmado. Se instala en tu servidor y '
         'funciona sin internet.',
@@ -76,15 +76,15 @@ def bloque(archivo, titulo, desc, imagen):
         '"operatingSystem":"Servidor propio del laboratorio, red interna",'
         '"url":"' + BASE + '",'
         '"inLanguage":"es-UY",'
-        '"description":"Sistema de gestión para laboratorios de microbiología '
-        'de alimentos. Cubre el circuito completo, del ingreso de la muestra '
+        '"description":"Sistema de gestión para laboratorios de microbiología. '
+        'Cubre el circuito completo, del ingreso de la muestra '
         'al Informe de Ensayo firmado. Se instala en un servidor del propio '
         'laboratorio y funciona sin conexión a internet.",'
         '"author":{"@type":"Person","name":"' + AUTOR + '"},'
         '"provider":{"@type":"Person","name":"' + AUTOR + '"},'
         '"areaServed":{"@type":"Country","name":"Uruguay"},'
         '"audience":{"@type":"Audience","audienceType":"Laboratorios de '
-        'microbiología de alimentos"},'
+        'microbiología"},'
         '"featureList":['
         '"Ingreso de muestras con numeración automática",'
         '"Carga de resultados con valores de referencia",'

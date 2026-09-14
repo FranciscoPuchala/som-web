@@ -79,7 +79,7 @@ def generar():
            font=fuente('segoeuib.ttf', 30), fill=VERDE)
 
     d.text((80, 522),
-           'Para laboratorios de microbiología de alimentos  ·  Funciona sin internet',
+           'Para laboratorios de microbiología  ·  Funciona sin internet',
            font=fuente('segoeui.ttf', 25), fill=SUAVE)
 
     # Filete inferior con el degradado de la marca.
